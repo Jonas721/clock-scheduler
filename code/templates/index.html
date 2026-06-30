@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ODCA Clock Scheduler</title>
+    <link rel="icon" type="image/x-icon" href="../static/clockIcon.png">
+    <link rel="stylesheet" href="../static/styles.css">
+  </head>
+
+  <body onload='init()'>
+    <img id="logo" src="../static/logo.png" alt="school logo that I stole from their website" style="width:210px;height:170px;">
+    <div class="bg">
+      <h1>ODCA CLOCK SCHEDULER</h1>
+    </div>
+    <br><br>
+    <a href="/view">View scheduled ring times</a>
+    <br><br><br><br>
+    <form id="fileForm" method="POST" enctype="multipart/form-data">
+      <label for="timingFile" class="btn">Select a file:</label>
+      <input class="file-upload" type="file" id="timingFile" name="fileInput" accept=".txt,.pdf,.csv" required/>
+      <br><br>
+      <input class="btn" type="submit" />
+    </form>
+    <br><br>
+    <div class="bg" hidden id="output">
+      <form enctype="multipart/form-data">
+        <input class="btn" type="button" onclick="toggleVacationMode()" value="Disable Clocks for Vacation?"/>
+        <input type="checkbox" id="vacayCheckBox" inert>
+      </form>
+    </div>
+  </body>
+</html>

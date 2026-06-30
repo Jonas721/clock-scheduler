@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ODCA Clock Scheduler</title>
+    <link rel="icon" type="image/x-icon" href="../static/clockIcon.png">
+    <link rel="stylesheet" href="../static/styles.css">
+  </head>
+
+
+  <body>
+    <div class="bg">
+        <h1>Zone: {{ zone }}</h1>
+    </div>
+    <table class="zones-table">
+        <tr>
+            <th>
+                <a href="?zone=High School">High School</a>
+            </th>
+            <th>
+                <a href="?zone=Gym">Gym</a>
+            </th>
+            <th>
+                <a href="?zone=Cafeteria">Cafeteria</a>
+            </th>
+            <th>
+                <a href="?zone=Undetermined">Undetermined</a>
+            </th>
+        </tr>
+    </table>
+        <div class="tooltip">(what is this?)</div>
+        <div class="hide">The clocks are divided into 4 different areas (zones). Use these buttons to set each zone's time individually (The undetermined zone is an extra for now in case of future expansion).</div>
+    <br>
+    <br>
+
+    <table class="week-table">
+        <thead>
+            <tr>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="mon-cell">
+                    <ul id="mon-times">
+                        {% for t in times[zone]["Monday"] %}
+                            <li class="dark">
+                                {{ t }}
+                                <form method="POST" action="/delete-time" style="display:inline;">
+                                    <input type="hidden" name="zone" value="{{ zone }}">
+                                    <input type="hidden" name="day" value="Monday">
+                                    <input type="hidden" name="time" value="{{ t }}">
+                                    <button class="delete-time">-</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <form method="POST" action="/prompt-add-time">
+                        <input type="hidden" name="zone" value="{{ zone }}">
+                        <input type="hidden" name="day" value="Monday">
+                        <button class="big">+</button>
+                    </form>
+                    {% if request.args.get("showAddTimePromptFor") == "Monday" %}
+                        <form method="POST" action="/add-time">
+                            <input type="hidden" name="zone" value="{{ zone }}">
+                            <input type="hidden" name="day" value="Monday">
+                            <input type="time" name="time" required>
+                            <button type="submit">Save</button>
+                        </form>
+                    {% endif %}
+                </td>
+                <td id="tue-cell">
+                    <ul id="tue-times">
+                        {% for t in times[zone]["Tuesday"] %}
+                            <li class="dark">
+                                {{ t }}
+                                <form method="POST" action="/delete-time" style="display:inline;">
+                                    <input type="hidden" name="zone" value="{{ zone }}">
+                                    <input type="hidden" name="day" value="Tuesday">
+                                    <input type="hidden" name="time" value="{{ t }}">
+                                    <button class="delete-time">-</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <form method="POST" action="/prompt-add-time">
+                        <input type="hidden" name="zone" value="{{ zone }}">
+                        <input type="hidden" name="day" value="Tuesday">
+                        <button class="big">+</button>
+                    </form>
+                    {% if request.args.get("showAddTimePromptFor") == "Tuesday" %}
+                        <form method="POST" action="/add-time">
+                            <input type="hidden" name="zone" value="{{ zone }}">
+                            <input type="hidden" name="day" value="Tuesday">
+                            <input type="time" name="time" required>
+                            <button type="submit">Save</button>
+                        </form>
+                    {% endif %}
+                </td>
+                <td id="wed-cell">
+                    <ul id="wed-times">
+                        {% for t in times[zone]["Wednesday"] %}
+                            <li class="dark">
+                                {{ t }}
+                                <form method="POST" action="/delete-time" style="display:inline;">
+                                    <input type="hidden" name="zone" value="{{ zone }}">
+                                    <input type="hidden" name="day" value="Wednesday">
+                                    <input type="hidden" name="time" value="{{ t }}">
+                                    <button class="delete-time">-</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <form method="POST" action="/prompt-add-time">
+                        <input type="hidden" name="zone" value="{{ zone }}">
+                        <input type="hidden" name="day" value="Wednesday">
+                        <button class="big">+</button>
+                    </form>
+                    {% if request.args.get("showAddTimePromptFor") == "Wednesday" %}
+                        <form method="POST" action="/add-time">
+                            <input type="hidden" name="zone" value="{{ zone }}">
+                            <input type="hidden" name="day" value="Wednesday">
+                            <input type="time" name="time" required>
+                            <button type="submit">Save</button>
+                        </form>
+                    {% endif %}
+                </td>
+                <td id="thu-cell">
+                    <ul id="thu-times">
+                        {% for t in times[zone]["Thursday"] %}
+                            <li class="dark">
+                                {{ t }}
+                                <form method="POST" action="/delete-time" style="display:inline;">
+                                    <input type="hidden" name="zone" value="{{ zone }}">
+                                    <input type="hidden" name="day" value="Thursday">
+                                    <input type="hidden" name="time" value="{{ t }}">
+                                    <button class="delete-time">-</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <form method="POST" action="/prompt-add-time">
+                        <input type="hidden" name="zone" value="{{ zone }}">
+                        <input type="hidden" name="day" value="Thursday">
+                        <button class="big">+</button>
+                    </form>
+                    {% if request.args.get("showAddTimePromptFor") == "Thursday" %}
+                        <form method="POST" action="/add-time">
+                            <input type="hidden" name="zone" value="{{ zone }}">
+                            <input type="hidden" name="day" value="Thursday">
+                            <input type="time" name="time" required>
+                            <button type="submit">Save</button>
+                        </form>
+                    {% endif %}
+                </td>
+                <td id="fri-cell">
+                    <ul id="fri-times">
+                        {% for t in times[zone]["Friday"] %}
+                            <li class="dark">
+                                {{ t }}
+                                <form method="POST" action="/delete-time" style="display:inline;">
+                                    <input type="hidden" name="zone" value="{{ zone }}">
+                                    <input type="hidden" name="day" value="Friday">
+                                    <input type="hidden" name="time" value="{{ t }}">
+                                    <button class="delete-time">-</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <form method="POST" action="/prompt-add-time">
+                        <input type="hidden" name="zone" value="{{ zone }}">
+                        <input type="hidden" name="day" value="Friday">
+                        <button class="big">+</button>
+                    </form>
+                    {% if request.args.get("showAddTimePromptFor") == "Friday" %}
+                        <form method="POST" action="/add-time">
+                            <input type="hidden" name="zone" value="{{ zone }}">
+                            <input type="hidden" name="day" value="Friday">
+                            <input type="time" name="time" required>
+                            <button type="submit">Save</button>
+                        </form>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <table class="zones-table">
+        <thead> 
+            <tr><th>
+                <div class="bg">
+                <h2>Holiday Break?</h2>
+                <div class="tooltip">(what is this?)</div>
+                <div class="hide">Set this to true to pause the clocks from going off at their appointed times; eg. if there is a school holiday which students will not be present for</div>
+                </div>
+            </th></tr>
+        </thead>
+        <tbody>
+            <tr><td>
+                <p class="dark">{{times[zone]["Holiday Break"][0]}}</p>
+                <form method="POST" action="/toggle-holiday-break">
+                    <input type="hidden" name="zone" value="{{ zone }}">
+                    <button class="big">Toggle</button>
+                </form>
+            </td></tr>
+        </tbody>
+    </table>
+  </body>
+</html>

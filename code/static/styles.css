@@ -1,0 +1,193 @@
+/* Define global color variables so they are easy to tweak */
+:root {
+--primary-color: #0061bb;
+--secondary-color: #88816b;
+--ternary-color: #d8cca5;
+--text-color: white;
+--disabled-text-color: #bebebe;
+}
+
+body {
+  text-align: center;
+  background-color: var(--primary-color);
+}
+
+p, label {
+  font-family: Arial, sans-serif;
+  color: var(--text-color);
+  font-size: 1.5em;
+}
+
+div.center {
+  margin: auto;
+  text-align: center;
+}
+
+div.bg {
+  margin: auto;
+  text-align: center;
+  background-color: var(--secondary-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.491);
+}
+
+h1 {
+  font-family: Georgia, 'Times New Roman', Times, serif, sans-serif;
+  color: var(--text-color);
+  font-size: 2.5em;
+}
+
+h2 {
+  font-family: Georgia, 'Times New Roman', Times, serif, sans-serif;
+  color: var(--text-color);
+  font-size: 1.5em;
+}
+
+input.file-upload {
+  display: none;
+}
+
+input.text-input {
+  font-family: Arial, sans-serif;
+  color: black;
+  font-size: 1.5em;
+}
+
+.btn {
+  background-color: var(--ternary-color);
+  border: none;
+  color: black;
+  font-family: Arial, sans-serif;
+  font-size: 1.5em;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.btn:hover {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+}
+
+li {
+  font-family: Arial, sans-serif;
+  color: var(--text-color);
+  font-size: 1.5em;
+  list-style-type: none;
+}
+
+.dark {
+  color: black;
+}
+
+input.disabled {
+  color: var(--disabled-text-color);
+}
+
+a {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  font-family: Arial, sans-serif;
+  text-decoration: none;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+button {
+  background-color: var(--secondary-color);
+  border: none;
+  color: var(--text-color);
+  font-family: Arial, sans-serif;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+button.big {
+  background-color: var(--secondary-color);
+  border: none;
+  color: var(--text-color);
+  font-family: Arial, sans-serif;
+  font-size: 2em;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+button:hover, a:hover {
+  background-color: var(--ternary-color);
+  color: black;
+}
+
+.zones-table {
+  margin: auto;
+  text-align: center;
+  width: 35%;
+  border-collapse: separate;
+  border-spacing: 6px;
+  background: var(--ternary-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.491);
+}
+
+.week-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.491);
+}
+
+.week-table thead th {
+  font-family: Arial, sans-serif;
+  background: var(--secondary-color);
+  color: white;
+  padding: 14px;
+  text-align: center;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+
+.week-table td:hover {
+  background: #f0f4fa;
+  transition: background 0.2s ease;
+}
+
+
+
+.hide {
+  display: none;
+}
+
+div.tooltip {
+  position: relative;
+  display: inline-block;
+  background-color: gainsboro;
+  border: none;
+  color: darkslategrey;
+  font-family: Arial, sans-serif;
+  font-size: 0.7em;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.tooltip:hover + .hide {
+  display: block;
+  font-family: Arial, sans-serif;
+  color: black;
+}
+
+
+
+.logo {
+  animation-name: spin;
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+}
+/* goofy animation for fun */
+@keyframes spin {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(360deg);}
+}
