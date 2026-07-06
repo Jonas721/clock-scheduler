@@ -145,6 +145,12 @@ def addTime():
     addTimeToCSV(zone, day, time)
     return redirect(url_for("view", zone=zone))
 
+@app.post("/test-ring")
+def testRing():
+    zone = request.form["zone"]
+    triggerAlarm(zone)
+    return redirect(url_for("view", zone=zone))
+
 @app.post("/toggle-holiday-break")
 def toggleHolidayBreak():
     zone = request.form["zone"]
@@ -159,7 +165,9 @@ def triggerAlarm(zone):
     Parameters:
     zone (str): The zone for which to trigger the alarm (e.g., "High School", "Gym", "Cafeteria", "Undetermined")
     """
-    print("ALARM TRIGGERED FOR " + zone + " at " + datetime.now().strftime("%H:%M:%S"))
+    print("----------------------------------------------" + 
+            "\nALARM TRIGGERED FOR " + zone + " at " + datetime.now().strftime("%H:%M:%S") + 
+            "\n----------------------------------------------")
     PIController.soundAlarm(zone)
 
 def run_scheduler():
