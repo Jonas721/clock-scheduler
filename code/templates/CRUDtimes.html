@@ -9,8 +9,14 @@
 
   <body>
     <div class="bg">
-        <h1>Zone: {{ zone }}</h1>
+        <h1>Zone: {{ zone }}
+            <form method="POST" action="/test-ring">
+                <input type="hidden" name="zone" value="{{ zone }}">
+                <button class="small">Test Ring</button>
+            </form>
+        </h1>
     </div>
+    
     <table class="zones-table">
         <tr>
             <th>

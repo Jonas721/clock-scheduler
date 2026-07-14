@@ -1,21 +1,16 @@
 import csv
+import PIController
 from datetime import datetime
 import time
 import threading
 from flask import Flask, redirect, render_template, request, url_for
-import RPi.GPIO as GPIO
 
 app = Flask(__name__)
 
 # switch this to the test file name for more convenient testing without messing up the schedule
 scheduleFileName = "schedule.csv"
 
-#setup relays for clocks
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(17, GPIO.OUT) # relay 1: high school
-GPIO.setup(27, GPIO.OUT) # relay 2: gym
-GPIO.setup(22, GPIO.OUT) # relay 3: cafeteria
-GPIO.setup(23, GPIO.OUT) # relay 4: undetermined
+PIController.setupGPIO()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -150,6 +145,12 @@ def addTime():
     addTimeToCSV(zone, day, time)
     return redirect(url_for("view", zone=zone))
 
+@app.post("/test-ring")
+def testRing():
+    zone = request.form["zone"]
+    triggerAlarm(zone)
+    return redirect(url_for("view", zone=zone))
+
 @app.post("/toggle-holiday-break")
 def toggleHolidayBreak():
     zone = request.form["zone"]
@@ -159,27 +160,15 @@ def toggleHolidayBreak():
 
 def triggerAlarm(zone):
     """
-    triggers the alarm for the specified zone by activating the corresponding relay
+    triggers the alarm for the specified zone by activating the corresponding relay;
+    wrapper function for PIController.soundAlarm()
     Parameters:
     zone (str): The zone for which to trigger the alarm (e.g., "High School", "Gym", "Cafeteria", "Undetermined")
     """
-    print("ALARM TRIGGERED FOR " + zone + " at " + datetime.now().strftime("%H:%M:%S"))
-    if (zone == "High School"):
-        GPIO.output(17, GPIO.LOW)
-        time.sleep(5) # keeps the alarm on for 5 seconds; change as needed
-        GPIO.output(17, GPIO.HIGH)
-    elif (zone == "Gym"):
-        GPIO.output(27, GPIO.LOW)
-        time.sleep(5)
-        GPIO.output(27, GPIO.HIGH)
-    elif (zone == "Cafeteria"):
-        GPIO.output(22, GPIO.LOW)
-        time.sleep(5)
-        GPIO.output(22, GPIO.HIGH)
-    elif (zone == "Undetermined"):
-        GPIO.output(23, GPIO.LOW)
-        time.sleep(5)
-        GPIO.output(23, GPIO.HIGH)
+    print("----------------------------------------------" + 
+            "\nALARM TRIGGERED FOR " + zone + " at " + datetime.now().strftime("%H:%M:%S") + 
+            "\n----------------------------------------------")
+    PIController.soundAlarm(zone)
 
 def run_scheduler():
     """
@@ -193,19 +182,28 @@ def run_scheduler():
         3: "Thursday",
         4: "Friday"}
 
+    # to prevent multiple alarm triggers and file reads in the same minute (for performance)
+    lastMinuteRang = None
+    lastMinuteRead = None
+    schedule = readCsv()
+
     while True:
-        schedule = readCsv()
         now = datetime.now().strftime("%H:%M")
+        if now != lastMinuteRead:
+            lastMinuteRead = now
+            schedule = readCsv()  # refresh the schedule every minute in case it was updated
+            print("Current time: " + now)
+        
         weekday_int = datetime.now().weekday()   # 0–6
         weekday = WEEKDAY_KEY.get(weekday_int)   # becomes a string now
-        print("Current time: " + now + ", Weekday: " + str(weekday))
-
         if weekday is not None:  # ignore weekends
             for zone in schedule:
                 if now in schedule[zone][weekday]:
-                    triggerAlarm(zone)
+                    if now != lastMinuteRang:  # only trigger if this is a new minute
+                        triggerAlarm(zone)
+                        lastMinuteRang = now
 
-        time.sleep(60)  # check in 60 second intervals
+        time.sleep(2)  # check in 2 second intervals
 
 
 if __name__ == '__main__':
@@ -217,4 +215,4 @@ if __name__ == '__main__':
 
         app.run(host="0.0.0.0", port=5000)
     finally:
-        GPIO.cleanup()
+        PIController.cleanupGPIO()  # ensure GPIO cleanup on exit

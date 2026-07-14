@@ -103,6 +103,16 @@ button {
   border-radius: 10px;
 }
 
+button.small {
+  background-color: gainsboro;
+  border: none;
+  color: black;
+  font-family: Arial, sans-serif;
+  font-size: 0.5em;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
 button.big {
   background-color: var(--secondary-color);
   border: none;
