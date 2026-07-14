@@ -181,14 +181,18 @@ def run_scheduler():
         2: "Wednesday",
         3: "Thursday",
         4: "Friday"}
-    lastMinuteRang = None  # to prevent multiple triggers in the same minute
+
+    # to prevent multiple alarm triggers and file reads in the same minute (for performance)
+    lastMinuteRang = None
+    lastMinuteRead = None
     schedule = readCsv()
 
     while True:
         now = datetime.now().strftime("%H:%M")
-        if now != lastMinuteRang:
+        if now != lastMinuteRead:
+            lastMinuteRead = now
             schedule = readCsv()  # refresh the schedule every minute in case it was updated
-            print("Current time: " + now + ", Weekday: " + str(weekday))
+            print("Current time: " + now)
         
         weekday_int = datetime.now().weekday()   # 0–6
         weekday = WEEKDAY_KEY.get(weekday_int)   # becomes a string now
