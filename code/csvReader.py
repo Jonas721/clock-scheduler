@@ -181,20 +181,25 @@ def run_scheduler():
         2: "Wednesday",
         3: "Thursday",
         4: "Friday"}
+    lastMinuteRang = None  # to prevent multiple triggers in the same minute
+    schedule = readCsv()
 
     while True:
-        schedule = readCsv()
         now = datetime.now().strftime("%H:%M")
+        if now != lastMinuteRang:
+            schedule = readCsv()  # refresh the schedule every minute in case it was updated
+            print("Current time: " + now + ", Weekday: " + str(weekday))
+        
         weekday_int = datetime.now().weekday()   # 0–6
         weekday = WEEKDAY_KEY.get(weekday_int)   # becomes a string now
-        print("Current time: " + now + ", Weekday: " + str(weekday))
-
         if weekday is not None:  # ignore weekends
             for zone in schedule:
                 if now in schedule[zone][weekday]:
-                    triggerAlarm(zone)
+                    if now != lastMinuteRang:  # only trigger if this is a new minute
+                        triggerAlarm(zone)
+                        lastMinuteRang = now
 
-        time.sleep(60)  # check in 60 second intervals
+        time.sleep(2)  # check in 2 second intervals
 
 
 if __name__ == '__main__':
