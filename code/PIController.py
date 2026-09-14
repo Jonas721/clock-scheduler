@@ -42,15 +42,15 @@ def soundAlarm(zone):
         GPIO.output(17, GPIO.LOW)
         time.sleep(timerLength)
         GPIO.output(17, GPIO.HIGH)
-    elif (zone == "Gym"):
+    if (zone == "Gym"):
         GPIO.output(27, GPIO.LOW)
         time.sleep(timerLength)
         GPIO.output(27, GPIO.HIGH)
-    elif (zone == "Cafeteria"):
+    if (zone == "Cafeteria"):
         GPIO.output(22, GPIO.LOW)
         time.sleep(timerLength)
         GPIO.output(22, GPIO.HIGH)
-    elif (zone == "Undetermined"):
+    if (zone == "Undetermined"):
         GPIO.output(23, GPIO.LOW)
         time.sleep(timerLength)
         GPIO.output(23, GPIO.HIGH)

@@ -183,8 +183,9 @@ def run_scheduler():
         4: "Friday"}
 
     # to prevent multiple alarm triggers and file reads in the same minute (for performance)
-    lastMinuteRang = None
-    lastMinuteRead = None
+    # TODO: should probably read this from the file instead of hardcoding zone names eventually
+    lastMinuteRang = {"High School": None, "Gym": None, "Cafeteria": None, "Undetermined": None}
+    lastMinuteRead = {"High School": None, "Gym": None, "Cafeteria": None, "Undetermined": None}
     schedule = readCsv()
 
     while True:
@@ -199,9 +200,10 @@ def run_scheduler():
         if weekday is not None:  # ignore weekends
             for zone in schedule:
                 if now in schedule[zone][weekday]:
-                    if now != lastMinuteRang:  # only trigger if this is a new minute
+                    # TODO: HERE IS THE BUG: the new minute check also prevents from sounding in multiple zones at once.
+                    if now != lastMinuteRang[zone]:  # only trigger if this is a new minute
                         triggerAlarm(zone)
-                        lastMinuteRang = now
+                        lastMinuteRang[zone] = now
 
         time.sleep(2)  # check in 2 second intervals
 
